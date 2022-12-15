@@ -36,7 +36,7 @@ export default {
         },
         inValidTask() {
             this.newTaskText = "Task bị rỗng";
-            this.emitTask()
+            // this.emitTask()
         },
         changeValueInput(e) {
             this.newTaskText = e;

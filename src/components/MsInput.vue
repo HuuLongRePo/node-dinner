@@ -26,9 +26,6 @@ export default {
           //   const a = e.KeyCode;
           this.internalText = this.$refs["MsInput"].value;
           this.$emit("valueChange", this.internalText);
-          console.log(this.internalText);
-          console.log(...this.internalText);
-
         },
       };
     },

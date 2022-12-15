@@ -1,15 +1,30 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <NewTask @addNewTask="addTask"/>
+  <TaskList :tasks="tasks" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NewTask from './components/NewTask.vue';
+import TaskList from './components/TaskList.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NewTask,
+    TaskList
+}, 
+data() {
+    return {
+      tasks: [],
+      newTask: { id: 1, text: '', isCompleted: false },
+      description: "one task selected"
+    }
+  },
+  methods: {
+    addTask(name) {
+      this.tasks.push({ id: this.tasks.length + 1, text: name, isCompleted: false })
+    }
   }
 }
 </script>
