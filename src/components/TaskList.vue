@@ -1,24 +1,25 @@
+
 <template>
-    <div class="task-list">
-        <TaskItem v-for="(task, index) in tasks" :key="index" :task="task" />
+    <div v-for="(task, index) in tasksNew" :key="index" class="task-item">
+        <input type="checkbox" class="task-checkbox">
+        <div>{{ task.text }}</div>
     </div>
 </template>
+  
 <script>
-import TaskItem from './TaskItem.vue';
-
-
 export default {
-    props: ['tasks'],
-    components: { TaskItem },
-    mounted() {
-        console.log(this.tasks);
+    props: {
+        tasks: []
+    },
+    data() {
+        return {
+            newdata: this.tasks
+        }
+    },
+    computed: {
+        tasksNew() {
+            return this.newdata 
+        }
     }
 }
 </script>
-
-<style scoped>
-.task-list {
-    width: 50%;
-    margin-top: 30px;
-}
-</style>

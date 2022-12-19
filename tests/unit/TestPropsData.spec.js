@@ -30,7 +30,7 @@ describe("Test props and data", () => {
         // wrapper.vm.propName = "giá trị A"
         // await nextTick();
         /**
-         * trườn hợp set thẳng vào giá trị thì có thể dùng cho Data và không nên * dùng cho Props vì trong vòng đời Vue không nên thay đổi trực tiếp 
+         * trường hợp set thẳng vào giá trị thì có thể dùng cho Data và không nên * dùng cho Props vì trong vòng đời Vue không nên thay đổi trực tiếp 
          * Props sẽ ảnh hưởng đến dữ liệu gửi cho Props từ component cha
          */
         // act

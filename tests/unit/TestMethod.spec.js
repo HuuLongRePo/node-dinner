@@ -1,53 +1,76 @@
-import MsInputVue from "@/components/MsInput.vue";
+import AppVue from "@/App.vue";
 import NewTaskVue from "@/components/NewTask.vue"
 import TaskListVue from "@/components/TaskList.vue";
-import { mount, shallowMount } from "@vue/test-utils"
-import { nextTick } from "vue";
+import { mount } from "@vue/test-utils"
 
 describe("Test component NewTask", () => {
+    it("Khi task nhan du lieu rong", async () => {
+        const wrapper = mount(NewTaskVue)
+        const spy = jest.spyOn(wrapper.vm, "addNewTask")
+        const inputSearch = wrapper.find('input')
+        inputSearch.setValue("")
+        await wrapper.find('button').trigger('click');
+        expect(spy).toBeCalled()
+        expect(wrapper.emitted().addNewTask.length).toBe(1)
+        expect(wrapper.emitted().addNewTask[0]).toEqual(["Task rong"])
+    }),
+        it("Khi task nhan du lieu đúng", async () => {
+            const wrapper = mount(NewTaskVue)
+            const spy = jest.spyOn(wrapper.vm, "addNewTask")
+            const inputSearch = wrapper.find('input')
+            inputSearch.setValue("đúng")
+            await wrapper.find('button').trigger('click');
+            expect(spy).toBeCalled()
+            expect(wrapper.emitted().addNewTask.length).toBe(1)
+            expect(wrapper.emitted().addNewTask[0]).toEqual(["đúng"])
+        })
 
-    test("Ví dụ 1. test hàm addNewTask khi gia tri newTaskText khong co", async () => {
-        const wrapper = mount(NewTaskVue);
-        const spy = jest.spyOn(wrapper.vm, "inValidTask");
-        const spyOn1 = jest.spyOn(wrapper.vm, "checkIsNullTask");
+})
 
-        // act
-        // wrapper.setData({ newTaskText: "" });
-        const input = wrapper.find("input");
-        await input.setValue("");
-        await wrapper.find("button").trigger("click"); // lần đầu emit ra giá trị new task
+describe("Test component TaskList", () => {
+    it("Khi task nhan du lieu đúng", () => {
+        const wrapper = mount(TaskListVue, {
+            props: {
+                tasks: [{ text: "abcd" }, { text: "abcdeee" }]
+            }
+        })
+        expect(wrapper.text()).toContain("abcd");
+        expect(wrapper.text()).toContain("abcdeee");
+    })
+})
+describe.only("Test Component App", () => {
+    it("khi co su kien addNewTask co gia tri",  () => {
+        const wrapper = mount(AppVue, {
+            data() {
+                return {
+                    tasks: [{id: 1, text: ''}]
+                }
+            }
+           
+        })
+        const spy = jest.spyOn(wrapper.vm, "addTask")
+        const testSpy = wrapper.vm.addTask("abcd")
 
-        expect(spy).toBeCalled();
-        expect(spyOn1).toBeCalled();
-        // expect(wrapper.vm.checkIsNullTask).toBeCalled();
-    });
-    test("Ví dụ 2.test hàm addNewTask có giá trị", async () => {
-        const wrapper = mount(NewTaskVue);
+        expect(spy).toBeCalled()
+        expect(testSpy).toBeCalled()
+        expect(wrapper.vm.tasks[1]).toEqual({ id: 2, text: "abcd" })
 
-        const spy = jest.spyOn(wrapper.vm, "emitTask");
-        const spyOn1 = jest.spyOn(wrapper.vm, "checkIsNullTask");
+    })
+    it("khi co su kien addNewTask Khong co gia tri",  () => {
+        const wrapper = mount(AppVue, {
+            data() {
+                return {
+                    tasks: [{id: 1, text: ''}]
+                }
+            }
+           
+        })
+        const spy = jest.spyOn(wrapper.vm, "addTask")
+        const testSpy = wrapper.vm.addTask("")
 
-        // wrapper.vm.checkIsNullTask = jest.fn(() => {
-        //   return true;
-        // });
-        const input = wrapper.find("input");
-        await input.setValue("test hàm addNewTask có giá trị");
+        expect(spy).toBeCalled()
+        expect(testSpy).toBeCalled()
+        expect(wrapper.vm.tasks[1]).toEqual({ id: 2, text: "" })
 
-        // wrapper.setData({ newTaskText: "" });
-        await wrapper.find("button").trigger("click"); // lần đầu emit ra giá trị new task
-        // wrapper.vm.newTaskText = "test hàm addNewTask có giá trị";
-        // nextTick
-        // act
-        // wrapper.vm.emitTask = jest.fn(() => {
-        //   wrapper.vm.$emit("addNewTask", wrapper.vm.newTaskText);
-        //   wrapper.vm.newTaskText = "nvcuong9";
-        // });
-
-        // await wrapper.find("button").trigger("click"); // lần đầu emit ra giá trị new task
-        expect(spyOn1).toBeCalled();
-        expect(spy).toBeCalled();
-        expect(wrapper.vm.newTaskText).toBe("");
-    });
-
-
+    })
 })

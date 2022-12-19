@@ -17,13 +17,13 @@ export default {
 data() {
     return {
       tasks: [],
-      newTask: { id: 1, text: '', isCompleted: false },
-      description: "one task selected"
+      // newTask: { id: 1, text: '', isCompleted: false },
+      // description: "one task selected"
     }
   },
   methods: {
     addTask(name) {
-      this.tasks.push({ id: this.tasks.length + 1, text: name, isCompleted: false })
+      this.tasks.push({ id: this.tasks.length + 1, text: name })
     }
   }
 }

@@ -1,6 +1,7 @@
 <template>
     <div class="wrap-input">
-        <MsInput :input="newTaskText" @valueChange="changeValueInput"></MsInput>
+        <!-- <MsInput :input="newTaskText" @valueChange="changeValueInput"></MsInput> -->
+        <input v-model="task" />
 
         <button class="wrap-button" data-test="add-task" @click="addNewTask()">
             Thêm mới
@@ -9,38 +10,29 @@
 </template>
   
 <script>
-import MsInput from "@/components/MsInput.vue";
 export default {
-    name: "TaskList",
-    components: { MsInput },
+    name: "NewTask",
 
     data() {
         return {
+            task: '',
             newTaskText: "",
         };
     },
+    computed: {
+        isNullTask() {
+            return !this.task || this.task.trim() == ""
+        }
+    },
     methods: {
         addNewTask() {
-            if (!this.checkIsNullTask()) {
-                this.emitTask();
+            if (this.isNullTask) {
+                this.$emit("addNewTask", 'Task rong');
             } else {
-                this.inValidTask();
+                this.$emit("addNewTask", this.task);
             }
-        },
-        checkIsNullTask() {
-            return !this.newTaskText || this.newTaskText.trim() == "";
-        },
-        emitTask() {
-            this.$emit("addNewTask", this.newTaskText);
-            this.newTaskText = "";
-        },
-        inValidTask() {
-            this.newTaskText = "Task bị rỗng";
-            // this.emitTask()
-        },
-        changeValueInput(e) {
-            this.newTaskText = e;
-        },
+            this.task = ''
+        }
     },
 };
 </script>
